@@ -9,5 +9,6 @@ server {
     include /conf.d/php5.conf;
     #include /conf.d/php7.conf;
     #include /conf.d/php8.conf;
+    #include /conf.d/php8.3.conf;
     try_files $uri $uri/ /index.php?$args;
 }

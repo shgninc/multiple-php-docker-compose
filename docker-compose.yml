@@ -5,6 +5,7 @@ services:
     image: hub.gap.im/ops/ninja:php5   # php5.6
     #image: hub.gap.im/ops/ninja:php7   # php7.1
     #image: hub.gap.im/ops/ninja:php8.1 # php8.1
+    #image: hub.gap.im/ops/ninja:php8.3 # php8.3
     hostname: proxy
     restart: always
     networks:

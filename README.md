@@ -1,2 +1,2 @@
-# mutiple-php-docker-compose
+# multiple-php-docker-compose
 Simple mutiple php version in a docker-compose.yml file

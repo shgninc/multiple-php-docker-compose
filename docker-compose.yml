@@ -1,0 +1,96 @@
+version: '3'
+services:
+  proxy:
+    container_name: proxy
+    image: hub.gap.im/ops/ninja:php5   # php5.6
+    #image: hub.gap.im/ops/ninja:php7   # php7.1
+    #image: hub.gap.im/ops/ninja:php8.1 # php8.1
+    hostname: proxy
+    restart: always
+    networks:
+      - mynetwork
+    ports:
+	  - 80:80
+    environment:
+      - TZ=Asia/Tehran
+    volumes:
+      - ./sites-enabled:/etc/nginx/sites-enabled
+      - ./www:/home/tsit
+      - ./logs:/logs
+      - ./conf.d:/conf.d/
+      
+   mongo:
+    container_name: mongo
+    image: hub.gap.im/ops/mongo:6.0
+    command: numactl --interleave=all mongod --bind_ip 0.0.0.0 --directoryperdb --port 27017 --setParameter disableLogicalSessionCacheRefresh=true --setParameter maxSessions=4000000 --logpath=/logs/mongod.log --quiet --maxConns 4000000 --slowms 2000
+    hostname: mongo
+    privileged: true
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - mynetwork
+    environment:
+      - TZ=Asia/Tehran
+    volumes:
+      - ./db/mongo:/data/db
+      - ./logs:/logs
+
+   mariadb:
+    container_name: mariadb
+    image: hub.gap.im/ops/mariadb:11.3.2
+    hostname: mariadb
+    restart: unless-stopped
+    networks:
+      - mynetwork
+    environment:
+      - TZ=Asia/Tehran
+      - MYSQL_ROOT_PASSWORD=password
+    volumes:
+      - ./db/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  myadmin:
+    container_name: myadmin
+    image: hub.gap.im/ops/phpmyadmin:5.2.0
+    hostname: myadmin
+    restart: unless-stopped
+    networks:
+      - mynetwork
+    environment:
+      - TZ=Asia/Tehran
+    links:
+      - mariadb:db
+    ports:
+      - 5111:80
+      
+   memcached:
+    container_name: memcached
+    image: hub.gap.im/ops/memcached
+    hostname: memcached
+    command: memcached -m 4096 -c 1000000
+    restart: always
+    networks:
+      - mynetwork
+    environment:
+      - TZ=Asia/Tehran
+    ports:
+      - 11211:11211 
+      
+   redis:
+    container_name: redis
+    image: hub.gap.im/ops/redis:6-buster
+    hostname: redis
+    command: redis-server --save ""
+    restart: always
+    networks:
+      - mynetwork
+    environment:
+      - TZ=Asia/Tehran
+
+networks:
+  mynetwork:
+    ipam:
+      config:
+        - subnet: 152.166.1.0/27

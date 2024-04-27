@@ -11,8 +11,12 @@ services:
       - 5600:80
     environment:
       - TZ=Asia/Tehran
+    depends_on:
+      - mariadb
+      - redis
+      - memcached
     volumes:
-      - ./sites-enabled:/etc/nginx/sites-enabled
+      - ./sites-enabled/default5.6:/etc/nginx/sites-enabled/default
       - ./www:/home/tsit
       - ./logs/logs5.6:/logs
       - ./21-php.ini:/etc/php/5.6/fpm/conf.d/21-php.ini
@@ -25,7 +29,7 @@ services:
     ports:
       - 7100:80
     volumes:
-      - ./sites-enabled:/etc/nginx/sites-enabled
+      - ./sites-enabled/default7.1:/etc/nginx/sites-enabled/default
       - ./www:/home/tsit
       - ./logs/logs7.1:/logs
       
@@ -37,7 +41,7 @@ services:
     ports:
       - 8100:80
     volumes:
-      - ./sites-enabled:/etc/nginx/sites-enabled
+      - ./sites-enabled/default8.1:/etc/nginx/sites-enabled/default
       - ./www:/home/tsit
       - ./logs/logs8.1:/logs
       
@@ -49,7 +53,7 @@ services:
     ports:
       - 8300:80
     volumes:
-      - ./sites-enabled:/etc/nginx/sites-enabled
+      - ./sites-enabled/default8.3:/etc/nginx/sites-enabled/default
       - ./www:/home/tsit
       - ./logs/logs8.3:/logs
     

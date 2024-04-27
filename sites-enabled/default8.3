@@ -1,0 +1,11 @@
+server {
+    listen 80 default_server;
+    client_max_body_size 10M;
+    access_log off;
+    error_log /logs/proxy.err;
+    root /home/tsit;
+    index index.php index.html index.htm;
+    more_set_headers "X-CN: TS_CN";
+    include /conf.d/php8.3.conf;
+    try_files $uri $uri/ /index.php?$args;
+}

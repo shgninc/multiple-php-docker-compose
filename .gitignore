@@ -1,0 +1,7 @@
+.Trashes
+Thumbs.db
+*.log
+!/.gitignore
+.vscode
+.idea/
+venv

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVICES="proxy mariadb mongo redis memcached myadmin"
+SERVICES="php5.6 php7.1 php8.1 php8.3 mariadb mongo redis memcached myadmin"
 
 COMMAND="up -d --remove-orphans"
 if [ ! -z "$1" ]; then

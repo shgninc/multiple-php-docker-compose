@@ -1,26 +1,53 @@
 version: '3'
 services:
-  proxy:
-    container_name: proxy
+  php5.6:  &php
+    container_name: php5.6
     image: hub.gap.im/ops/ninja:php5   # php5.6
-    #image: hub.gap.im/ops/ninja:php7   # php7.1
-    #image: hub.gap.im/ops/ninja:php8.1 # php8.1
-    #image: hub.gap.im/ops/ninja:php8.3 # php8.3
-    hostname: proxy
+    hostname: php5.6
     restart: always
     networks:
       - mynetwork
     ports:
-	  - 80:80
+      - 5600:80
     environment:
       - TZ=Asia/Tehran
     volumes:
       - ./sites-enabled:/etc/nginx/sites-enabled
       - ./www:/home/tsit
-      - ./logs:/logs
+      - ./logs/logs5.6:/logs
       - ./conf.d:/conf.d/
       
-   mongo:
+  php7.1:
+    << : *php 
+    container_name: php7.1
+    image: hub.gap.im/ops/ninja:php7   # php7.1
+    hostname: php7.1
+    ports:
+      - 7100:80
+    volumes:
+      - ./logs/logs7.1/logs
+      
+  php8.1:
+    << : *php
+    container_name: php8.1
+    image: hub.gap.im/ops/ninja:php8.1 # php8.1
+    hostname: php8.1
+    ports:
+      - 8100:80
+    volumes:
+      - ./logs/logs8.1:/logs
+      
+  php8.3:
+    << : *php
+    container_name: php8.3
+    image: hub.gap.im/ops/ninja:php8.3 # php8.3
+    hostname: php8.3
+    ports:
+      - 8300:80
+    volumes:
+      - ./logs/logs8.3:/logs
+    
+  mongo:
     container_name: mongo
     image: hub.gap.im/ops/mongo:6.0
     command: numactl --interleave=all mongod --bind_ip 0.0.0.0 --directoryperdb --port 27017 --setParameter disableLogicalSessionCacheRefresh=true --setParameter maxSessions=4000000 --logpath=/logs/mongod.log --quiet --maxConns 4000000 --slowms 2000
@@ -37,7 +64,7 @@ services:
       - ./db/mongo:/data/db
       - ./logs:/logs
 
-   mariadb:
+  mariadb:
     container_name: mariadb
     image: hub.gap.im/ops/mariadb:11.3.2
     hostname: mariadb
@@ -66,7 +93,7 @@ services:
     ports:
       - 5111:80
       
-   memcached:
+  memcached:
     container_name: memcached
     image: hub.gap.im/ops/memcached
     hostname: memcached
@@ -79,7 +106,7 @@ services:
     ports:
       - 11211:11211 
       
-   redis:
+  redis:
     container_name: redis
     image: hub.gap.im/ops/redis:6-buster
     hostname: redis

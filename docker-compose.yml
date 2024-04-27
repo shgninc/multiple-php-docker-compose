@@ -15,7 +15,6 @@ services:
       - ./sites-enabled:/etc/nginx/sites-enabled
       - ./www:/home/tsit
       - ./logs/logs5.6:/logs
-      - ./conf.d:/conf.d/
       
   php7.1:
     << : *php 
@@ -25,7 +24,9 @@ services:
     ports:
       - 7100:80
     volumes:
-      - ./logs/logs7.1/logs
+      - ./sites-enabled:/etc/nginx/sites-enabled
+      - ./www:/home/tsit
+      - ./logs/logs7.1:/logs
       
   php8.1:
     << : *php
@@ -35,6 +36,8 @@ services:
     ports:
       - 8100:80
     volumes:
+      - ./sites-enabled:/etc/nginx/sites-enabled
+      - ./www:/home/tsit
       - ./logs/logs8.1:/logs
       
   php8.3:
@@ -45,6 +48,8 @@ services:
     ports:
       - 8300:80
     volumes:
+      - ./sites-enabled:/etc/nginx/sites-enabled
+      - ./www:/home/tsit
       - ./logs/logs8.3:/logs
     
   mongo:

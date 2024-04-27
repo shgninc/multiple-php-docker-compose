@@ -1,6 +1,7 @@
 .Trashes
 Thumbs.db
-*.log
+*.logs
+./db/*
 !/.gitignore
 .vscode
 .idea/

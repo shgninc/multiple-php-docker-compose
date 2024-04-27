@@ -126,4 +126,4 @@ networks:
   mynetwork:
     ipam:
       config:
-        - subnet: 152.166.1.0/27
+        - subnet: 152.166.1.0/24

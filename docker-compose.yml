@@ -15,6 +15,7 @@ services:
       - ./sites-enabled:/etc/nginx/sites-enabled
       - ./www:/home/tsit
       - ./logs/logs5.6:/logs
+      - ./21-php.ini:/etc/php/5.6/fpm/conf.d/21-php.ini
       
   php7.1:
     << : *php 
